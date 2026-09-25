@@ -57,10 +57,10 @@ public class Classement {
     public static List<Resultat> classementEcuries(List<Resultat> pilotes) {
         Map<String, Resultat> ecuries = new HashMap<>();
         for (Resultat pilote : pilotes) {
-            Resultat resultat = ecuries.get(pilote.ecurie());
+            Resultat resultat = ecuries.get(pilote.ecurie);
             if (resultat == null) {
-                resultat = new Resultat(pilote.nom(), pilote.ecurie());
-                ecuries.put(pilote.ecurie(), resultat);
+                resultat = new Resultat(pilote.ecurie, pilote.ecurie);
+                ecuries.put(pilote.ecurie, resultat);
             }
             resultat.points += pilote.points;
             resultat.victoires += pilote.victoires;
@@ -74,7 +74,18 @@ public class Classement {
     //    ABANDONS EXCLUS, arrondie à 2 décimales. 0 s'il n'a jamais terminé.
     //    Ex. positions 1, 2 et un abandon -> 1.5
     public static double positionMoyenne(List<Ligne> lignes, String pilote) {
-        // À COMPLÉTER
-        return 0;
+        int totalPositions = 0;
+        int count = 0;
+        for (Ligne ligne : lignes) {
+            if (ligne.pilote().equals(pilote) && ligne.position() > 0) {
+                totalPositions += ligne.position();
+                count++;
+            }
+        }
+        if (count == 0) {
+            return 0.0;
+        }
+        double moyenne = (double) totalPositions / count;
+        return Math.round(moyenne * 100.0) / 100.0; 
     }
 }
